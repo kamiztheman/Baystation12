@@ -1116,13 +1116,15 @@
 	premium = list(/obj/item/clothing/gloves/insulated = 1)
 
 /obj/machinery/vending/tool/adherent
-	name = "Adherent Tool Dispenser"
-	desc = "This looks like a heavily modified vending machine. It contains technology that doesn't appear to be human in origin."
+	name = "Crystalline Printing Matrix"
+	desc = "This fabrication machine seems to solidify a crystalline liquid into various objects with the help of super-heated lasers."
 	product_ads = "\[C#\]\[Cb\]\[Db\]. \[Ab\]\[A#\]\[Bb\]. \[E\]\[C\]\[Gb\]\[B#\]. \[C#\].;\[Cb\]\[A\]\[F\]\[Cb\]\[C\]\[E\]\[Cb\]\[E\]\[Fb\]. \[G#\]\[C\]\[Ab\]\[A\]\[C#\]\[B\]. \[Eb\]\[choral\]. \[E#\]\[C#\]\[Ab\]\[E\]\[C#\]\[Fb\]\[Cb\]\[F#\]\[C#\]\[Gb\]."
-	icon_state = "tool"
-	icon_deny = "tool-deny"
-	icon_vend = "tool_vend"
-	vend_delay = 5
+	icon = 'icons/obj/machines/adherent.dmi'
+	icon_state = "crystal"
+	icon_deny = "crystal-deny"
+	icon_vend = "crystal-vend"
+	clicksound = 'sound/items/Welder.ogg'
+	vend_delay = 11
 	products = list(/obj/item/weapon/weldingtool/electric/crystal = 5,
 					/obj/item/weapon/wirecutters/crystal = 5,
 					/obj/item/weapon/screwdriver/crystal = 5,
@@ -1134,8 +1136,22 @@
 	if((istype(user) && user.species.name == SPECIES_ADHERENT) || emagged)
 		. = ..()
 	else
-		to_chat(user, "<span class='notice'>The vending machine emits a discordant note, and a small hole blinks several times. It looks like it wants something inserted.</span>")
+		to_chat(user, "<span class='notice'>The printing matrix emits a discordant note, and a small hole blinks several times. It looks like it wants something inserted.</span>")
+/obj/machinery/vending/tool/adherent/vend(var/datum/stored_items/vending_products/R, mob/user)
+	spawn(src.vend_delay)
+		R.get_product(get_turf(src))
+		src.visible_message("the [src] manipulates the liquid crystal into a solid material as it quickly fabricates \the [R.item_name].")
+/obj/machinery/vending/tool/adherent/stock(obj/item/weapon/W, var/datum/stored_items/vending_products/R, var/mob/user)
+	if(!user.unEquip(W))
+		return
 
+	if(R.add_product(W))
+		playsound(loc, 'sound/effects/bubbles.ogg')
+		to_chat(user, "<span class='notice'>You insert the [W] into the the liquid crystal as it dissolves.</span>")
+		SSnano.update_uis(src)
+		return 1
+
+	SSnano.update_uis(src)
 /obj/machinery/vending/engivend
 	name = "Engi-Vend"
 	desc = "Spare tool vending. What? Did you expect some witty description?"
