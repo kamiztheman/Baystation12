@@ -100,7 +100,7 @@
 			for(var/datum/reagent/R in ingested.reagent_list)
 				var/inedible_nutriment_amount = gains_nutriment_from_inedible_reagents[R.type]
 				if(inedible_nutriment_amount > 0)
-					owner.nutrition += inedible_nutriment_amount
+					owner.adjust_nutrition(inedible_nutriment_amount)
 
 		// Do we have any objects to digest?
 		var/list/check_materials
@@ -121,7 +121,7 @@
 
 				// Process it.
 				if(can_digest_matter[mat])
-					owner.nutrition += max(1, Floor(digested/100))
+					owner.adjust_nutrition(max(1, Floor(digested/100)))
 					updated_stacks = TRUE
 				else if(can_process_matter[mat])
 					LAZYDISTINCTADD(check_materials, mat)
@@ -189,10 +189,13 @@
 /obj/item/organ/internal/voxstack/examine(var/mob/user)
 	. = ..(user)
 
-	var/user_vox = ishuman(user) && istype(user:species, /datum/species/vox)
+	var/user_vox = isspecies(user, SPECIES_VOX) || isspecies(user, SPECIES_VOX_ARMALIS)
 	if (istype(backup))
 		var/owner_viable = find_dead_player(ownerckey, TRUE)
-		to_chat(user, SPAN_NOTICE("[user_vox?"The integrity":"A"] light on [src] blinks [owner_viable?"rapidly":"slowly"].[user_vox?owner_viable?" It is viable.":" It is dormant right now.":""]"))
+		if (user_vox)
+			to_chat(user, SPAN_NOTICE("The integrity light on [src] blinks [owner_viable ? "rapidly. It can be implanted." : "slowly. It is dormant."]"))
+		else
+			to_chat(user, SPAN_NOTICE("A light on [src] blinks [owner_viable ? "rapidly" : "slowly"]."))
 	else if (user_vox)
 		to_chat(user, SPAN_NOTICE("The integrity light on [src] is off. It is empty and lifeless."))
 

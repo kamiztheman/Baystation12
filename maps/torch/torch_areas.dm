@@ -930,6 +930,7 @@
 
 /area/quartermaster/hangar/top
 	name = "\improper Hangar Upper Walkway"
+	req_access = list()
 
 /area/quartermaster/flightcontrol
 	name = "\improper Flight Control Tower"
@@ -1046,7 +1047,7 @@
 // Security
 
 /area/security/bo
-	name = "\improper Security - Brig Officer"
+	name = "\improper Security - Brig Chief"
 	icon_state = "Warden"
 	req_access = list(access_armory)
 
@@ -1072,10 +1073,6 @@
 
 /area/security/opscheck
 	name = "\improper First Deck Security Checkpoint"
-	icon_state = "checkpoint"
-
-/area/security/oldopscheck
-	name = "\improper Decommissioned First Deck Security Checkpoint"
 	icon_state = "checkpoint"
 
 /area/security/habcheck
@@ -1128,7 +1125,13 @@
 	icon_state = "patients"
 
 /area/medical/mentalhealth
-	name = "\improper Mental Health"
+	name = "\improper Chaplain's Office"
+	icon_state = "medbay3"
+	ambience = list('sound/ambience/signal.ogg')
+	req_access = list(access_chapel_office)
+
+/area/medical/counselor
+	name = "\improper Counselor's Office"
 	icon_state = "medbay3"
 	ambience = list('sound/ambience/signal.ogg')
 	req_access = list(access_psychiatrist)
@@ -1761,4 +1764,3 @@
 /area/tdome/tdomeobserve
 	name = "\improper Thunderdome (Observer.)"
 	icon_state = "purple"
-
