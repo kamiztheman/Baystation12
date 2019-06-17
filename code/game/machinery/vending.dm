@@ -10,7 +10,7 @@
 	layer = BELOW_OBJ_LAYER
 	anchored = 1
 	density = 1
-	obj_flags = OBJ_FLAG_ANCHORABLE | OBJ_FLAG_ROTATABLE
+	obj_flags = OBJ_FLAG_ANCHORABLE
 	clicksound = "button"
 	clickvol = 40
 
@@ -1120,7 +1120,9 @@
 					/obj/item/weapon/crowbar/crystal = 5,
 					/obj/item/weapon/wrench/crystal = 5,
 					/obj/item/device/multitool/crystal = 5,
-					/obj/item/weapon/storage/belt/utility/vigil = 5)
+					/obj/item/weapon/storage/belt/utility/crystal = 5,
+					/obj/item/weapon/storage/toolbox/crystal = 5)
+
 /obj/machinery/vending/tool/adherent/vend(var/datum/stored_items/vending_products/R, var/mob/living/carbon/user)
 	if((istype(user) && user.species.name == SPECIES_ADHERENT) || emagged)
 		. = ..()
